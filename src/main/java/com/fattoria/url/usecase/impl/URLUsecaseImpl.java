@@ -27,7 +27,7 @@ public class URLUsecaseImpl implements URLUsecase {
     public URLUsecaseResponse url(String url, String urlPai) throws Exception {
         try {
             String randomChar = getRandomChars();
-            String urlModificada = urlPai + "/" + randomChar;
+            String urlModificada = urlPai + "" + randomChar;
 
             URLGatewayRequest gatewayRequest = converter.toGatewayInsertRequest(url, urlModificada);
             gateway.insert(gatewayRequest);
