@@ -24,10 +24,10 @@ public class URLUsecaseImpl implements URLUsecase {
     private final URLGateway gateway;
 
     @Override
-    public URLUsecaseResponse url(String url) throws Exception {
+    public URLUsecaseResponse url(String url, String urlPai) throws Exception {
         try {
             String randomChar = getRandomChars();
-            String urlModificada = "http://localhost:8080/url/" + randomChar;
+            String urlModificada = urlPai + "/" + randomChar;
 
             URLGatewayRequest gatewayRequest = converter.toGatewayInsertRequest(url, urlModificada);
             gateway.insert(gatewayRequest);

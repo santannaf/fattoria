@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
@@ -33,11 +34,13 @@ public class URLHttp {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(path = "/url")
-    public ResponseEntity<URLUsecaseResponse> createUrl(@Valid @RequestBody URLHttpRequest body) {
+    public ResponseEntity<URLUsecaseResponse> createUrl(@Valid @RequestBody URLHttpRequest body, HttpServletRequest request) {
         try {
             if (!isValid(body.getUrlOriginal())) throw new Exception("URL Inválida !");
 
-            URLUsecaseResponse response = usecase.url(body.getUrlOriginal());
+            String urlRequest = request.getRequestURL().toString();
+
+            URLUsecaseResponse response = usecase.url(body.getUrlOriginal(), urlRequest);
             log.info("Short URL: " + response.getUrls().getShortUrl());
 
             shortenUrlList.put(response.getUrls().getRandomChart(), body);

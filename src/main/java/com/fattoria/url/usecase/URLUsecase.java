@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface URLUsecase {
 
-    URLUsecaseResponse url(String url) throws Exception;
+    URLUsecaseResponse url(String url, String urlPai) throws Exception;
     List<URLsUsecaseResponse> listURLs() throws Exception;
     Boolean deleteURL(int id) throws Exception;
     Boolean updateURL(int id) throws Exception;
