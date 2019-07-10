@@ -57,14 +57,14 @@ public class URLHttp {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping(name = "/urls")
+    @GetMapping(name = "/url/list")
     public ResponseEntity<List<URLHttpResponse>> listURLs() {
         try {
             List<URLHttpResponse> response = converter.toHttpResponseListUrls(usecase.listURLs());
 
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception error) {
-
+            log.error("Erro ao retornar urls > " + error.getMessage());
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "" + error.getMessage());
         }
     }

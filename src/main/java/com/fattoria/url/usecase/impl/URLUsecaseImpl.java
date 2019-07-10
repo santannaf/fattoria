@@ -47,7 +47,9 @@ public class URLUsecaseImpl implements URLUsecase {
     @Override
     public List<URLsUsecaseResponse> listURLs() throws Exception {
         try {
-            return null;
+            List<URLsUsecaseResponse> response = converter.toUsecaseResponseListUrls(gateway.urls());
+
+            return response;
         } catch (Exception error) {
             log.error(error.getMessage());
             throw new Exception(error.getMessage());
