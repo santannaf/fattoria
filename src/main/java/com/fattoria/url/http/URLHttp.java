@@ -27,13 +27,13 @@ public class URLHttp {
     private final URLUsecase usecase;
     private Map<String, URLHttpRequest> shortenUrlList = new HashMap<>();
 
-    @RequestMapping(value="/url/{randomstring}", method=RequestMethod.GET)
+    @RequestMapping(value="/{randomstring}", method=RequestMethod.GET)
     public void getFullUrl(HttpServletResponse response, @PathVariable("randomstring") String randomString) throws IOException {
         response.sendRedirect(shortenUrlList.get(randomString).getUrlOriginal());
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping(path = "/url")
+    @PostMapping(path = "/")
     public ResponseEntity<URLUsecaseResponse> createUrl(@Valid @RequestBody URLHttpRequest body, HttpServletRequest request) {
         try {
             if (!isValid(body.getUrlOriginal())) throw new Exception("URL Inválida !");
