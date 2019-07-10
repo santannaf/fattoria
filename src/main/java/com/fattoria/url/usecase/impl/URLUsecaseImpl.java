@@ -5,6 +5,7 @@ import com.fattoria.url.gateway.data.request.URLGatewayRequest;
 import com.fattoria.url.usecase.URLUsecase;
 import com.fattoria.url.usecase.converter.URLUsecaseConverter;
 import com.fattoria.url.usecase.data.response.ErrorResponse;
+import com.fattoria.url.usecase.data.response.Result;
 import com.fattoria.url.usecase.data.response.URLUsecaseResponse;
 import com.fattoria.url.usecase.data.response.URLsUsecaseResponse;
 import lombok.RequiredArgsConstructor;
@@ -23,12 +24,17 @@ public class URLUsecaseImpl implements URLUsecase {
     private final URLGateway gateway;
 
     @Override
-    public URLUsecaseResponse url(String url, String modificada) throws Exception {
+    public URLUsecaseResponse url(String url) throws Exception {
         try {
-            URLGatewayRequest gatewayRequest = converter.toGatewayInsertRequest(url, modificada);
+            String randomChar = getRandomChars();
+            String urlModificada = "http://localhost:8080/url/" + randomChar;
+
+            URLGatewayRequest gatewayRequest = converter.toGatewayInsertRequest(url, urlModificada);
             gateway.insert(gatewayRequest);
 
-            return URLUsecaseResponse.builder().message("URL modificada com sucesso !").build();
+            return URLUsecaseResponse.builder().message("URL modificada com sucesso !")
+                    .urls(Result.builder().fullUrl(url).shortUrl(urlModificada).randomChart(randomChar).build())
+                    .build();
         } catch (Exception error) {
             log.error(error.getMessage());
             List<ErrorResponse> resp = new ArrayList<>();
@@ -76,5 +82,13 @@ public class URLUsecaseImpl implements URLUsecase {
         }
         sb.append('/');
         return sb.toString();
+    }
+
+    private String getRandomChars() {
+        String randomStr = "";
+        String possibleChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        for (int i = 0; i < 7; i++)
+            randomStr += possibleChars.charAt((int) Math.floor(Math.random() * possibleChars.length()));
+        return randomStr;
     }
 }

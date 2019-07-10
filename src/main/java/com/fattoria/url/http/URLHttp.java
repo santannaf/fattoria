@@ -37,15 +37,10 @@ public class URLHttp {
         try {
             if (!isValid(body.getUrlOriginal())) throw new Exception("URL Inválida !");
 
-            String randomChar = getRandomChars();
-            String urlModificada = "http://localhost:8080/url/" + randomChar;
-            shortenUrlList.put(randomChar, body);
+            URLUsecaseResponse response = usecase.url(body.getUrlOriginal());
+            log.info("Short URL: " + response.getUrls().getShortUrl());
 
-            log.info(shortenUrlList.toString());
-            log.info(shortenUrlList.get(randomChar).getUrlOriginal());
-
-            log.info(urlModificada);
-            URLUsecaseResponse response = usecase.url(body.getUrlOriginal(), urlModificada);
+            shortenUrlList.put(response.getUrls().getRandomChart(), body);
 
             return new ResponseEntity<>(response, HttpStatus.CREATED);
         } catch (Exception error) {
@@ -54,15 +49,7 @@ public class URLHttp {
         }
     }
 
-    private String getRandomChars() {
-        String randomStr = "";
-        String possibleChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        for (int i = 0; i < 7; i++)
-            randomStr += possibleChars.charAt((int) Math.floor(Math.random() * possibleChars.length()));
-        return randomStr;
-    }
-
-    public static boolean isValid(String url) {
+    private static boolean isValid(String url) {
         try {
             new URL(url).toURI();
             return true;

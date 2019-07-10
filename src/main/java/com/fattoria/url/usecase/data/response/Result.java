@@ -5,14 +5,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
-public class URLUsecaseResponse {
-    private String message;
-    private Result urls;
-    private List<ErrorResponse> erros;
+@NoArgsConstructor
+public class Result {
+    private String fullUrl;
+    private String shortUrl;
+    private String randomChart;
 }
