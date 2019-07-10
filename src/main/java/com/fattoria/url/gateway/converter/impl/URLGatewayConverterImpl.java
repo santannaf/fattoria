@@ -43,8 +43,8 @@ public class URLGatewayConverterImpl implements URLGatewayConverter {
     @Override
     public URLModel toDatabase(URLGatewayRequest request) {
         return URLModel.builder()
-                .urlOrignal(request.getUrlOriginal())
                 .urlModificada(request.getUrlModificada())
+                .urlOrignal(request.getUrlOriginal())
                 .build();
     }
 }
