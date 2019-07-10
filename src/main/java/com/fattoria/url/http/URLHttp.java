@@ -1,6 +1,8 @@
 package com.fattoria.url.http;
 
+import com.fattoria.url.http.converter.URLHttpConverter;
 import com.fattoria.url.http.data.request.URLHttpRequest;
+import com.fattoria.url.http.data.response.URLHttpResponse;
 import com.fattoria.url.usecase.URLUsecase;
 import com.fattoria.url.usecase.data.response.URLUsecaseResponse;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +19,7 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -25,6 +28,7 @@ import java.util.Map;
 public class URLHttp {
 
     private final URLUsecase usecase;
+    private final URLHttpConverter converter;
     private Map<String, URLHttpRequest> shortenUrlList = new HashMap<>();
 
     @RequestMapping(value="/{randomstring}", method=RequestMethod.GET)
@@ -51,6 +55,26 @@ public class URLHttp {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "URL não foi criada > " + error.getMessage() + " body: " + body.getUrlOriginal());
         }
     }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping(name = "/urls")
+    public ResponseEntity<List<URLHttpResponse>> listURLs() {
+        try {
+            List<URLHttpResponse> response = converter.toHttpResponseListUrls(usecase.listURLs());
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception error) {
+
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "" + error.getMessage());
+        }
+    }
+
+
+
+
+
+
+
 
     private static boolean isValid(String url) {
         try {
