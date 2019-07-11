@@ -73,9 +73,6 @@ public class URLHttp {
 
 
 
-
-
-
     private static boolean isValid(String url) {
         try {
             new URL(url).toURI();
