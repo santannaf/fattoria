@@ -50,9 +50,9 @@ public class URLHttp {
 
             shortenUrlList.put(response.getUrls().getRandomChart(), body);
 
-//            HttpServletResponse r = (HttpServletResponse) res;
-//            r.addHeader("Access-Control-Allow-Origin", "*");
-//            r.addHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT, PATCH, HEAD, OPTIONS");
+            HttpServletResponse r = (HttpServletResponse) res;
+            r.addHeader("Access-Control-Allow-Origin", "http://localhost:4200");
+            r.addHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT, PATCH, HEAD, OPTIONS");
 //            r.addHeader("Access-Control-Allow-Headers", "Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
 //            r.addHeader("Access-Control-Expose-Headers", "Access-Control-Allow-Origin");
 //            r.addIntHeader("Access-Control-Max-Age", 10);
