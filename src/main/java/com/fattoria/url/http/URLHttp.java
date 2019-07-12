@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -38,7 +39,7 @@ public class URLHttp {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(path = "/")
-    public ResponseEntity<URLUsecaseResponse> createUrl(@Valid @RequestBody URLHttpRequest body, HttpServletRequest request) {
+    public ResponseEntity<URLUsecaseResponse> createUrl(@Valid @RequestBody URLHttpRequest body, HttpServletRequest request, ServletResponse res) {
         try {
             if (!isValid(body.getUrlOriginal())) throw new Exception("URL Inválida !");
 
@@ -49,6 +50,10 @@ public class URLHttp {
 
             shortenUrlList.put(response.getUrls().getRandomChart(), body);
 
+            HttpServletResponse r = (HttpServletResponse) res;
+            r.setHeader("Access-Control-Allow-Origin", "*");
+            r.setHeader("Access-Control-Allow-Methods", "POST, PUT, GET, OPTIONS, DELETE");
+
             return new ResponseEntity<>(response, HttpStatus.CREATED);
         } catch (Exception error) {
             log.error("Erro ao criar um contato > " + error.getMessage());
@@ -58,9 +63,13 @@ public class URLHttp {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(name = "/url/list")
-    public ResponseEntity<List<URLHttpResponse>> listURLs() {
+    public ResponseEntity<List<URLHttpResponse>> listURLs(ServletResponse res) {
         try {
+            HttpServletResponse r = (HttpServletResponse) res;
             List<URLHttpResponse> response = converter.toHttpResponseListUrls(usecase.listURLs());
+
+            r.setHeader("Access-Control-Allow-Origin", "*");
+            r.setHeader("Access-Control-Allow-Methods", "POST, PUT, GET, OPTIONS, DELETE");
 
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception error) {
@@ -68,10 +77,6 @@ public class URLHttp {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "" + error.getMessage());
         }
     }
-
-
-
-
 
     private static boolean isValid(String url) {
         try {
