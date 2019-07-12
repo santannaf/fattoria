@@ -39,6 +39,7 @@ public class URLHttp {
 
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(path = "/", method = {RequestMethod.POST, RequestMethod.OPTIONS})
+    @CrossOrigin(origins = "*")
     public ResponseEntity<URLUsecaseResponse> createUrl(@Valid @RequestBody URLHttpRequest body, HttpServletRequest request) {
         try {
             if (!isValid(body.getUrlOriginal())) throw new Exception("URL Inválida !");
