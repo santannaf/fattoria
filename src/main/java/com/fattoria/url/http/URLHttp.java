@@ -7,13 +7,12 @@ import com.fattoria.url.usecase.URLUsecase;
 import com.fattoria.url.usecase.data.response.URLUsecaseResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.validator.internal.constraintvalidators.hv.URLValidator;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -51,13 +50,6 @@ public class URLHttp {
 
             shortenUrlList.put(response.getUrls().getRandomChart(), body);
 
-//            HttpServletResponse r = (HttpServletResponse) res;
-//            r.addHeader("Access-Control-Allow-Origin", "http://localhost:4200");
-//            r.addHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT, PATCH, HEAD, OPTIONS");
-//            r.addHeader("Access-Control-Allow-Headers", "Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
-//            r.addHeader("Access-Control-Expose-Headers", "Access-Control-Allow-Origin");
-//            r.addIntHeader("Access-Control-Max-Age", 10);
-
             return new ResponseEntity<>(response, HttpStatus.CREATED);
         } catch (Exception error) {
             log.error("Erro ao criar um contato > " + error.getMessage());
@@ -69,15 +61,24 @@ public class URLHttp {
     @GetMapping(name = "/url/list")
     public ResponseEntity<List<URLHttpResponse>> listURLs() {
         try {
-            //HttpServletResponse r = (HttpServletResponse) res;
             List<URLHttpResponse> response = converter.toHttpResponseListUrls(usecase.listURLs());
-//
-//            r.setHeader("Access-Control-Allow-Origin", "*");
-//            r.setHeader("Access-Control-Allow-Methods", "POST, PUT, GET, OPTIONS, DELETE");
 
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception error) {
             log.error("Erro ao retornar urls > " + error.getMessage());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "" + error.getMessage());
+        }
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping(name = "/url/{id}")
+    public ResponseEntity<URLHttpResponse> url(@PathVariable int id) {
+        try {
+            URLHttpResponse response = converter.toHttpResponseUrl(usecase.url(id));
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception error) {
+            log.error("Erro ao retornar url > " + error.getMessage());
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "" + error.getMessage());
         }
     }

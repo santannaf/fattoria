@@ -26,4 +26,13 @@ public class URLHttpConverterImpl implements URLHttpConverter {
 
         return list;
     }
+
+    @Override
+    public URLHttpResponse toHttpResponseUrl(URLsUsecaseResponse response) {
+        return URLHttpResponse.builder()
+                .id(response.getId())
+                .fullUrl(response.getUrlOriginal())
+                .shortUrl(response.getUrlModificada())
+                .build();
+    }
 }

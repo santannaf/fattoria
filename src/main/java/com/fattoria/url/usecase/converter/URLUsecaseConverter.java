@@ -9,4 +9,5 @@ import java.util.List;
 public interface URLUsecaseConverter {
     URLGatewayRequest toGatewayInsertRequest(String urlOriginal, String urlModificada);
     List<URLsUsecaseResponse> toUsecaseResponseListUrls(List<URLGatewayResponse> data);
+    URLsUsecaseResponse toUsecaseResponseUrl(URLGatewayResponse data);
 }

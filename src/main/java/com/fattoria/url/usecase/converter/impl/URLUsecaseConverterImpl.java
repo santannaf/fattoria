@@ -34,4 +34,13 @@ public class URLUsecaseConverterImpl implements URLUsecaseConverter {
 
         return list;
     }
+
+    @Override
+    public URLsUsecaseResponse toUsecaseResponseUrl(URLGatewayResponse data) {
+        return URLsUsecaseResponse.builder()
+                .id(data.getId())
+                .urlOriginal(data.getUrlOriginal())
+                .urlModificada(data.getUrlModificada())
+                .build();
+    }
 }

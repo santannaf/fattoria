@@ -4,6 +4,7 @@ import com.fattoria.url.gateway.URLGateway;
 import com.fattoria.url.gateway.data.request.URLGatewayRequest;
 import com.fattoria.url.usecase.URLUsecase;
 import com.fattoria.url.usecase.converter.URLUsecaseConverter;
+import com.fattoria.url.usecase.data.request.URLUsecaseRequest;
 import com.fattoria.url.usecase.data.response.ErrorResponse;
 import com.fattoria.url.usecase.data.response.Result;
 import com.fattoria.url.usecase.data.response.URLUsecaseResponse;
@@ -57,6 +58,17 @@ public class URLUsecaseImpl implements URLUsecase {
     }
 
     @Override
+    public URLsUsecaseResponse url(int id) throws Exception {
+        try {
+            URLsUsecaseResponse response = converter.toUsecaseResponseUrl(gateway.url(id));
+            return response;
+        } catch (Exception error) {
+            log.error(error.getMessage());
+            throw new Exception(error.getMessage());
+        }
+    }
+
+    @Override
     public Boolean deleteURL(int id) throws Exception {
         try {
             return null;
@@ -67,9 +79,15 @@ public class URLUsecaseImpl implements URLUsecase {
     }
 
     @Override
-    public Boolean updateURL(int id) throws Exception {
+    public URLsUsecaseResponse updateURL(String url, String urlPai, int id) throws Exception {
         try {
-            return null;
+            String randomChar = getRandomChars();
+            String urlModificada = urlPai + "" + randomChar;
+
+            URLGatewayRequest gatewayRequest = converter.toGatewayInsertRequest(url, urlModificada);
+            URLsUsecaseResponse response = converter.toUsecaseResponseUrl(gateway.updateUrl(gatewayRequest, id));
+
+            return response;
         } catch (Exception error) {
             log.error(error.getMessage());
             throw new Exception(error.getMessage());
