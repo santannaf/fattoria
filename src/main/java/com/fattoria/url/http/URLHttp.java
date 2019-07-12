@@ -39,7 +39,7 @@ public class URLHttp {
 
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(path = "/", method = {RequestMethod.POST, RequestMethod.OPTIONS})
-    public ResponseEntity<URLUsecaseResponse> createUrl(@Valid @RequestBody URLHttpRequest body, HttpServletRequest request, ServletResponse res) {
+    public ResponseEntity<URLUsecaseResponse> createUrl(@Valid @RequestBody URLHttpRequest body, HttpServletRequest request) {
         try {
             if (!isValid(body.getUrlOriginal())) throw new Exception("URL Inválida !");
 
@@ -50,9 +50,9 @@ public class URLHttp {
 
             shortenUrlList.put(response.getUrls().getRandomChart(), body);
 
-            HttpServletResponse r = (HttpServletResponse) res;
-            r.addHeader("Access-Control-Allow-Origin", "http://localhost:4200");
-            r.addHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT, PATCH, HEAD, OPTIONS");
+//            HttpServletResponse r = (HttpServletResponse) res;
+//            r.addHeader("Access-Control-Allow-Origin", "http://localhost:4200");
+//            r.addHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT, PATCH, HEAD, OPTIONS");
 //            r.addHeader("Access-Control-Allow-Headers", "Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
 //            r.addHeader("Access-Control-Expose-Headers", "Access-Control-Allow-Origin");
 //            r.addIntHeader("Access-Control-Max-Age", 10);
@@ -66,13 +66,13 @@ public class URLHttp {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(name = "/url/list")
-    public ResponseEntity<List<URLHttpResponse>> listURLs(ServletResponse res) {
+    public ResponseEntity<List<URLHttpResponse>> listURLs() {
         try {
-            HttpServletResponse r = (HttpServletResponse) res;
+            //HttpServletResponse r = (HttpServletResponse) res;
             List<URLHttpResponse> response = converter.toHttpResponseListUrls(usecase.listURLs());
-
-            r.setHeader("Access-Control-Allow-Origin", "*");
-            r.setHeader("Access-Control-Allow-Methods", "POST, PUT, GET, OPTIONS, DELETE");
+//
+//            r.setHeader("Access-Control-Allow-Origin", "*");
+//            r.setHeader("Access-Control-Allow-Methods", "POST, PUT, GET, OPTIONS, DELETE");
 
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception error) {
