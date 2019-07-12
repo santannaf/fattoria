@@ -58,7 +58,7 @@ public class URLHttp {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping(name = "/url/list")
+    @GetMapping(path = "/url/list")
     public ResponseEntity<List<URLHttpResponse>> listURLs() {
         try {
             List<URLHttpResponse> response = converter.toHttpResponseListUrls(usecase.listURLs());
@@ -71,7 +71,7 @@ public class URLHttp {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping(name = "/url/{id}")
+    @GetMapping(path = "/url/{id}")
     public ResponseEntity<URLHttpResponse> url(@PathVariable int id) {
         try {
             URLHttpResponse response = converter.toHttpResponseUrl(usecase.url(id));
