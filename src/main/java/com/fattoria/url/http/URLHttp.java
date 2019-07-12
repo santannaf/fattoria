@@ -53,6 +53,7 @@ public class URLHttp {
             HttpServletResponse r = (HttpServletResponse) res;
             r.setHeader("Access-Control-Allow-Origin", "*");
             r.setHeader("Access-Control-Allow-Methods", "POST, PUT, GET, OPTIONS, DELETE");
+            r.setHeader("Access-Control-Allow-Headers", "Origin, Content-Type");
 
             return new ResponseEntity<>(response, HttpStatus.CREATED);
         } catch (Exception error) {
