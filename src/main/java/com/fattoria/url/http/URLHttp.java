@@ -93,9 +93,10 @@ public class URLHttp {
     @CrossOrigin(origins = "*")
     public ResponseEntity<URLHttpResponse> updateUrl(@PathVariable int id, @Valid @RequestBody URLHttpRequest body, HttpServletRequest request) {
         try {
-            String urlRequest = request.getRequestURL().toString();
+            String[] urlRequest = request.getRequestURL().toString().split("url");
+            log.info(urlRequest[0]);
 
-            URLHttpResponse response = converter.toHttpResponseUrl(usecase.updateURL(body.getUrlOriginal(), urlRequest, id));
+            URLHttpResponse response = converter.toHttpResponseUrl(usecase.updateURL(body.getUrlOriginal(), urlRequest[0], id));
 
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception error) {
