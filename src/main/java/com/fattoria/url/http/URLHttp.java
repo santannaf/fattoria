@@ -15,11 +15,11 @@ import org.springframework.web.server.ResponseStatusException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -31,8 +31,14 @@ public class URLHttp {
     private Map<String, URLHttpRequest> shortenUrlList = new HashMap<>();
 
     @RequestMapping(value = "/{randomstring}", method = RequestMethod.GET)
-    public void getFullUrl(HttpServletResponse response, @PathVariable("randomstring") String randomString) throws IOException {
-        response.sendRedirect(shortenUrlList.get(randomString).getUrlOriginal());
+    public void getFullUrl(HttpServletResponse response, @PathVariable("randomstring") String randomString, HttpServletRequest request) throws Exception {
+        List<URLHttpResponse> data = converter.toHttpResponseListUrls(usecase.listURLs());
+
+        List<URLHttpResponse> list = data.stream()
+                .filter(item -> item.getShortUrl().equals(request.getRequestURL().toString()))
+                .collect(Collectors.toList());
+
+        response.sendRedirect(list.get(0).getFullUrl());
     }
 
     @ResponseStatus(HttpStatus.CREATED)
