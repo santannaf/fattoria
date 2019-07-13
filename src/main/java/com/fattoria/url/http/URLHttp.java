@@ -31,7 +31,7 @@ public class URLHttp {
     private final URLHttpConverter converter;
     private Map<String, URLHttpRequest> shortenUrlList = new HashMap<>();
 
-    @RequestMapping(value="/{randomstring}", method=RequestMethod.GET)
+    @RequestMapping(value = "/{randomstring}", method = RequestMethod.GET)
     public void getFullUrl(HttpServletResponse response, @PathVariable("randomstring") String randomString) throws IOException {
         response.sendRedirect(shortenUrlList.get(randomString).getUrlOriginal());
     }
@@ -75,6 +75,21 @@ public class URLHttp {
     public ResponseEntity<URLHttpResponse> url(@PathVariable int id) {
         try {
             URLHttpResponse response = converter.toHttpResponseUrl(usecase.url(id));
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception error) {
+            log.error("Erro ao retornar url > " + error.getMessage());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "" + error.getMessage());
+        }
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping(path = "/url/{id}")
+    public ResponseEntity<URLHttpResponse> updateUrl(@PathVariable int id, @Valid @RequestBody URLHttpRequest body, HttpServletRequest request) {
+        try {
+            String urlRequest = request.getRequestURL().toString();
+
+            URLHttpResponse response = converter.toHttpResponseUrl(usecase.updateURL(body.getUrlOriginal(), urlRequest, id));
 
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception error) {
