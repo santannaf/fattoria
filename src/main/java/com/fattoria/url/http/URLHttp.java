@@ -85,6 +85,7 @@ public class URLHttp {
 
     @ResponseStatus(HttpStatus.OK)
     @PutMapping(path = "/url/{id}")
+    @CrossOrigin(origins = "*")
     public ResponseEntity<URLHttpResponse> updateUrl(@PathVariable int id, @Valid @RequestBody URLHttpRequest body, HttpServletRequest request) {
         try {
             String urlRequest = request.getRequestURL().toString();
