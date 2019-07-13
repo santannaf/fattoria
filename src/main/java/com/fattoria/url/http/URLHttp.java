@@ -94,9 +94,8 @@ public class URLHttp {
     public ResponseEntity<URLHttpResponse> updateUrl(@PathVariable int id, @Valid @RequestBody URLHttpRequest body, HttpServletRequest request) {
         try {
             String[] urlRequest = request.getRequestURL().toString().split("url");
-            log.info(urlRequest[0]);
 
-            URLHttpResponse response = converter.toHttpResponseUrl(usecase.updateURL(body.getUrlOriginal(), urlRequest[0] + urlRequest[1], id));
+            URLHttpResponse response = converter.toHttpResponseUrl(usecase.updateURL(body.getUrlOriginal(), urlRequest[0] + "url" + urlRequest[1], id));
 
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception error) {
