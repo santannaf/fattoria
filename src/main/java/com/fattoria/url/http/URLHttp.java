@@ -96,7 +96,7 @@ public class URLHttp {
             String[] urlRequest = request.getRequestURL().toString().split("url");
             log.info(urlRequest[0]);
 
-            URLHttpResponse response = converter.toHttpResponseUrl(usecase.updateURL(body.getUrlOriginal(), urlRequest[0], id));
+            URLHttpResponse response = converter.toHttpResponseUrl(usecase.updateURL(body.getUrlOriginal(), urlRequest[0] + urlRequest[1], id));
 
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception error) {
