@@ -4,7 +4,6 @@ import com.fattoria.url.gateway.URLGateway;
 import com.fattoria.url.gateway.data.request.URLGatewayRequest;
 import com.fattoria.url.usecase.URLUsecase;
 import com.fattoria.url.usecase.converter.URLUsecaseConverter;
-import com.fattoria.url.usecase.data.request.URLUsecaseRequest;
 import com.fattoria.url.usecase.data.response.ErrorResponse;
 import com.fattoria.url.usecase.data.response.Result;
 import com.fattoria.url.usecase.data.response.URLUsecaseResponse;
