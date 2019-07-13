@@ -52,7 +52,7 @@ public class URLHttp {
 
             return new ResponseEntity<>(response, HttpStatus.CREATED);
         } catch (Exception error) {
-            log.error("Erro ao criar um contato > " + error.getMessage());
+            log.error("Erro ao criar uma url > " + error.getMessage());
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "URL não foi criada > " + error.getMessage() + " body: " + body.getUrlOriginal());
         }
     }
@@ -94,7 +94,20 @@ public class URLHttp {
 
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception error) {
-            log.error("Erro ao retornar url > " + error.getMessage());
+            log.error("Erro ao atualizar a url > " + error.getMessage());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "" + error.getMessage());
+        }
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @DeleteMapping(path = "/url/{id}")
+    public ResponseEntity<Boolean> deleteUrl(@PathVariable int id) {
+        try {
+            Boolean response = usecase.deleteURL(id);
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception error) {
+            log.error("Erro ao deletar a url > " + error.getMessage());
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "" + error.getMessage());
         }
     }

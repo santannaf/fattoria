@@ -71,7 +71,7 @@ public class URLUsecaseImpl implements URLUsecase {
     @Override
     public Boolean deleteURL(int id) throws Exception {
         try {
-            return null;
+            return gateway.deleteUrl(id);
         } catch (Exception error) {
             log.error(error.getMessage());
             throw new Exception(error.getMessage());
